@@ -1,0 +1,69 @@
+#search-field {
+	width: 100%;
+	margin-top: -20px;
+}
+
+.search-option {
+	font-size: 0.8em;
+}
+
+#search-results {
+	max-height: 160px;
+	height: 160px;
+	overflow-y: scroll;
+
+	margin-top: 10px;
+
+	width: 100%;
+}
+
+#search-results .name {
+	flex: 6;
+	font-size: 0.9em;
+}
+
+#search-results .cost {
+	flex: 2;
+	text-align: end;
+	padding-right: 10px;
+}
+
+#search-results .set {
+	text-transform: uppercase;
+	font-size: 0.9em;
+}
+
+#search-results .result {
+	padding: 4px 0;
+	border-bottom: 0.5px solid grey;
+}
+
+#search-results .result:nth-of-type(2n) {
+	background-color: rgba(255, 255, 255, 0.1);
+}
+
+#search-results .result:hover {
+	background-color: var(--material-divider-color);
+	cursor: pointer;
+}
+
+
+#card {
+	display: block;
+	max-width: 100%;
+	margin: 0 auto;
+}
+
+#flip {
+	display: block;
+	/* background-color: rgb(62, 145, 201); */
+	background-color: var(--nodecg-configure-color);
+	color: white;
+
+	margin: 10px 0 0 0;
+}
+
+#flip[disabled] {
+	background-color: rgb(110, 110, 110) !important;
+	background-color: var(--nodecg-disabled-color);
+}
