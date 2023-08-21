@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<script
+		src="../bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+	<link rel="import"
+		href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+
+	<link rel="import"
+		href="../bower_components/debounce-replicant/debounce-replicant.html">
+	<link rel="import"
+		href="../bower_components/nodecg-replicant/nodecg-replicant.html">
+	<link rel="stylesheet" href="assets/css/common.css">
+
+	<custom-style>
+		<style include="iron-flex iron-flex-alignment iron-flex-factors">
+			@font-face {
+				font-family: 'Bebas Neue Bold';
+				src: url('assets/fonts/BebasNeue Bold.otf');
+			}
+
+			#event {
+				font-family: 'Bebas Neue Bold';
+				color: var(--color-text-primary);
+				font-size: 5vh
+			}
+
+			#price {
+				font-family: 'Bebas Neue Bold';
+				color: var(--color-text-primary);
+				font-size: 3.5vh;
+				text-align: center;
+			}
+
+			body {
+				margin: 0;
+				width: 100vw;
+				height: 100vh;
+				overflow: hidden;
+			}
+
+			#container {
+				width: 30vw;
+				height: 100%;
+				background: black;
+				float: right;
+
+				background: var(--color-background-primary);
+				/* background-image: -webkit-linear-gradient(162deg, var(--color-accent-primary) 39.65%, transparent 40%); */
+
+				border-left: 0.5vh var(--color-accent-primary) solid;
+			}
+
+			#card {
+				margin-top: 20%;
+				padding: 0 5% 0 5%;
+				width: 100%;
+				box-sizing: border-box;
+				object-fit: scale-down;
+			}
+		</style>
+	</custom-style>
+</head>
+
+<body>
+	<dom-bind id="dom-bind">
+		<template>
+			<div id="container" class="layout vertical center-justified">
+				<img id="card" src="[[_selectedCardImage(selected, cardFace)]]">
+				<!-- <div id="event">[[eventName]]</div> -->
+				<!-- <div id="price">[[_priceDescriptor(selected)]]</div> -->
+			</div>
+
+			<img id="hovered-preload"
+				src="[[selected.card_faces.0.image_uris.png]]"
+				style="opacity: 0;">
+
+			<nodecg-replicant replicant-name="selected"
+				replicant-bundle="nodecg-scryfall"
+				value="{{selected}}"></nodecg-replicant>
+			<nodecg-replicant replicant-name="selected-card-face"
+				replicant-bundle="nodecg-scryfall"
+				value="{{cardFace}}"></nodecg-replicant>
+			<nodecg-replicant replicant-name="hovered"
+				replicant-bundle="nodecg-scryfall"
+				value="{{hovered}}"></nodecg-replicant>
+			<!-- <debounce-replicant replicant-name="event.name" replicant-bundle="streamsgood" value="{{eventName}}" wait="500"></debounce-replicant> -->
+		</template>
+	</dom-bind>
+	<script>
+		(function () {
+			const hovered = nodecg.Replicant('hovered', 'nodecg-scryfall');
+
+			window.addEventListener('WebComponentsReady', function () {
+				let domBind = document.querySelector('#dom-bind');
+				const img = new Image();
+
+				domBind.selected = {
+					card_faces: [
+						{
+							image_uris: {
+								png: 'https://img.scryfall.com/cards/large/en/lea/288.jpg'
+							}
+						}
+					]
+				};
+
+				domBind.cardFace = -1;
+
+				domBind._selectedCardImage = (selected, cardFace) => {
+					return selected.card_faces[cardFace] ? selected.card_faces[cardFace].image_uris.png : selected.card_faces[0].image_uris.png;
+				};
+
+				//  domBind._priceDescriptor = (selected) => {
+				//  	let descriptor = `${selected.set}`;
+				//  	if (selected.prices && selected.prices.usd) {
+				//  		descriptor += ` | TCG-Mid: $${selected.prices.usd}`;
+				//  	}
+
+				//  	return descriptor;
+				//  };
+
+				hovered.on('change', (newValue, oldValue) => {
+					console.log(newValue, oldValue);
+					if (newValue && newValue.image_uris) {
+						img.src = newValue.image_uris.png;
+						img.onload = () => { console.log(`Loaded ${img.src}`); }
+					}
+				});
+			});
+		})();
+	</script>
+</body>
+
+</html>

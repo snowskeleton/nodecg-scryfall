@@ -20,8 +20,15 @@
       {
         "name": "scryfall-result",
         "title": "Scryfall Output",
-        "width": 2,
+        "width": 6,
         "file": "scryfall-result.html"
+      }
+    ],
+    "graphics": [
+      {
+        "file": "mtg-card.html",
+        "width": 1920,
+        "height": 1080
       }
     ]
   },
